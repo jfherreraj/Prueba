@@ -12,7 +12,7 @@ using System.Web.Mvc;
 namespace Prueba.WEB.Controllers
 {
     public class HomeController : Controller
-    {
+    { 
         public ActionResult Index()
         {
             List<Colaborador> colaboadores = getColaboradores();
