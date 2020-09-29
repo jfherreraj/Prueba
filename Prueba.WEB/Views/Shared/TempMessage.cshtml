@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewBag.Title = "TempMessage";
+}
+
+
+@{
+    /**/
+
+    string mensaje_exito = TempData["mensaje_exito"] as string;
+    if (!String.IsNullOrEmpty(mensaje_exito))
+    {
+
+        <script>
+            toastr.success('@mensaje_exito');
+        </script>
+    }
+
+    string mensaje_exito_prolongado = TempData["mensaje_exito_prolongado"] as string;
+    if (!String.IsNullOrEmpty(mensaje_exito_prolongado))
+    {
+
+        <script>
+            toastr.success('@mensaje_exito_prolongado', 'Confirmación', { "timeOut": 5000, "extendedTimeOut": 1000 });
+        </script>
+    }
+
+    string mensaje_error = TempData["mensaje_error"] as string;
+    if (!String.IsNullOrEmpty(mensaje_error))
+    {
+
+        <script>
+            toastr.error('@mensaje_error');
+        </script>
+    }
+}
+

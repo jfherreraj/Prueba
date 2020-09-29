@@ -1,0 +1,81 @@
+﻿
+
+@{
+    List<Prueba.WEB.Models.TareasFitros> tareas = ViewBag.Tareas;
+}
+<div class="row">
+    <div class="card">
+        <table id="table" class="table display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Descripción</th>
+                    <th>Id Colaborador</th>
+                    <th>Estado</th>
+                    <th>Prioridad</th>
+                    <th>Inicio</th>
+                    <th>Fin</th>
+                    <th>Notas</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var tarea in tareas)
+                {
+                    <tr>
+                        <td>@tarea.descripcion</td>
+                        <td>@tarea.nombre</td>
+                        <td>@tarea.codigo_estado</td>
+                        <td>@tarea.codigo_prioridad</td>
+                        <td>@tarea.fecha_inicio</td>
+                        <td>@tarea.fecha_fin</td>
+                        <td>@tarea.nota</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+<style>
+    /* Ensure that the demo table scrolls */
+    th, td {
+        white-space: nowrap;
+    }
+
+    div.dataTables_wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    table thead tr th {
+        font-size: small !important;
+        font-weight: bold !important;
+        text-align: center !important;
+    }
+
+    table tbody tr td {
+        font-size: small !important;
+    }
+
+    /*Ensure that the demo table scrolls
+    th, td {
+        white-space: nowrap;
+    }
+
+    div.dataTables_wrapper {
+        width: 100%;
+        margin: 0 auto;
+    }*/
+    table {
+        table-layout: fixed !important;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $("#table").DataTable();
+    });
+</script>
+
+

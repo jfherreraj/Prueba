@@ -1,0 +1,187 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    List<Prueba.WEB.Models.Colaborador> colaboradores = ViewBag.Colaboradores;
+    List<Prueba.WEB.Models.Estado> estados = ViewBag.Estados;
+    List<Prueba.WEB.Models.Prioridad> prioridades = ViewBag.Prioridades;
+}
+
+<div class="row">
+    <span class="btn pull-right" id="agrega_tarea"><a href="@Url.Action("AgregaTarea","Home")"> Agregar Tarea </a> </span>
+</div>
+
+<div class="card">
+
+    <div class="row">
+        <div class="col-md-4 col-xs-12 ">
+            <label for="start_date">Fecha Inicial</label>
+            <div class="input-group datePicker pull-left">
+                <input autocomplete="off" type="text" id="start_date" class="input_date" style="width:100%" placeholder="Periodo Inicial" />
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 col-xs-12">
+            <label for="start_date">Fecha Final</label>
+            <div class="input-group datePicker pull-left">
+                <input autocomplete="off" type="text" id="end_date" class="input_date" style="width:100%" placeholder="Periodo Final" />
+                <span class="input-group-addon" style="margin-top:4%">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+
+        <div class="form-check form-check-inline" style="margin-top:2%">
+            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1">
+            <label class="form-check-label" for="inlineCheckbox1">TODOS</label>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+
+            <div class="form-group">
+                <label for="colaborador">Colaborador</label>
+                <select class="form-control" id="colaborador">
+                    <option>Seleccione</option>
+                    @foreach (var col in colaboradores)
+                    {
+                        <option data-id="@col.id_colaborador">@col.nombre @col.apellido</option>
+
+                    }
+                </select>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 col-sm-12">
+
+            <div class="form-group">
+                <label for="estado">Estado</label>
+                <select class="form-control" id="estado">
+                    <option>Seleccione</option>
+                    @foreach (var estado in estados)
+                    {
+                        <option data-id="@estado.codigo_estado">@estado.codigo_estado</option>
+
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-4 col-sm-12">
+
+            <div class="form-group">
+                <label for="prioridad">Prioridad</label>
+                <select class="form-control" id="prioridad">
+                    <option>Seleccione</option>
+                    @foreach (var priori in prioridades)
+                    {
+                        <option data-id="@priori.codigo_prioridad">@priori.codigo_prioridad</option>
+
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="row text-center">
+        <span class="btn" id="filtrar_tarea" style="background-color:#00bfdf; color:white">Filtrar</span>
+    </div>
+
+</div>
+
+
+<div id="tareas_cargadas">
+
+</div>
+
+<style>
+
+    input, select, textarea {
+        max-width: 100% !important;
+    }
+
+    #agrega_tarea {
+        background-color: #70bf4b;
+        color: white;
+    }
+
+        #agrega_tarea a {
+            background-color: #70bf4b;
+            color: white;
+        }
+
+    .row {
+        margin-top: 1% !important;
+    }
+</style>
+
+
+<script>
+    $(document).ready(function () {
+
+        var date_picker = $('.datePicker').datetimepicker({
+            useCurrent: false,
+            format: 'YYYY/MM/DD',
+            allowInputToggle: true,
+            widgetPositioning: {
+                horizontal: 'left',
+                vertical: 'bottom',
+            },
+        });
+
+        //$("#tareas_cargadas").load("@Url.Action("_TareasAgregadas", "Tarea")");
+
+
+        $('#inlineCheckbox1').on("click", function () {
+            if ($('#inlineCheckbox1').prop('checked')) {
+                $('input[type="text"]').val('');
+                $('select').val($('select > option:first').val())
+            };
+        });
+
+        $("#filtrar_tarea").on("click", function () {
+            if ($('#inlineCheckbox1').prop('checked')) {
+                $("#tareas_cargadas").load("@Url.Action("_TareasAgregadas", "Home")");
+            }
+            else {
+
+                var fecha_inicio = $("#start_date").val();
+                var fecha_fin = $("#end_date").val();
+                if (fecha_inicio != "" && fecha_fin != "") {
+
+                    var id_colaborador = $("#colaborador").children("option:selected").data("id");
+                    var codigo_estado = $("#estado").val();
+                    var codigo_prioridad = $("#prioridad").val();
+                    fecha_inicio = $("#start_date").val();
+                    fecha_fin = $("#end_date").val();
+                    console.log(codigo_prioridad);
+
+
+                    var filtro = {
+                        id_colaborador: id_colaborador,
+                        codigo_estado: codigo_estado,
+                        codigo_prioridad: codigo_prioridad,
+                        fecha_inicio: fecha_inicio,
+                        fecha_fin: fecha_fin,
+                    };
+                    $("#tareas_cargadas").load("@Url.Action("_TareasAgregadasFiltro", "Home")", {filtro});
+                }
+                else {
+                    alert("Debe seleccionar la fecha inicial y final");
+                }
+            }
+        });
+
+    });
+
+</script>
